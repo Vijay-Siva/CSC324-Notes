@@ -106,4 +106,41 @@ The 324 is in tail position wrt the disjunction expression.
 
 If the compiler determines that the expression is equivalent to #true, so that the result of the #true doesn't
 need to be examined at run-time, then the disjunction expression dissappears at compile time and the question 
-of whether the #true is in tail position w.r.t to it dissappears as well. 
+of whether the #true is in tail position w.r.t to it dissappears as well.  
+
+## Loops are Expressible via function call  
+
+If recursion is allowed, and tail calls are optimized, then loops are a derived concept, not a foundational one.
+
+A while loop can be written as 
+```
+(define (loop)
+    ; The operation ‘when’ is a single-branch ‘if’.
+    ; When the condition expression is true, the body expression(s) are evaluated in order.
+    (when (positive? n)
+      (set! accumulator (+ accumulator n))
+      (set! n (sub1 n))
+      (loop)))
+```  
+
+There is an operation 'local' to bundle together definitions, and expressions to evaluate in the scope
+of the definitions, into a single expression.  
+
+The simplest program transformation operation in racket is 'define-syntax-rule'. It takes a new expression
+form we would like to be able to use, and the expression form we would like it to be translated to. 
+```
+(define-syntax-rule
+  (while <boolean-condition-expression>
+         <body-expression>
+         ; The ‘...’ is like Kleene-*.
+         ; Note too that it's a rare instance of something being used postfix in racket.
+         ...)
+  (local [(define (loop)
+            (when <boolean-condition-expression>
+              <body-expression>
+              ...
+              (loop)))]
+    (loop)))
+```  
+
+
