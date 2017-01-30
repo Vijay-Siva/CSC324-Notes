@@ -11,7 +11,7 @@ arity: the number of arguments that a function takes
   
 map: unary-function list -> list  
 Reduction rule:  
-  (map <f> (list <a> <b> <c> ...))
-  -> (list (<f> <a>) (<f> <b>) (<f> <c>) ...)
+  * (map <f> (list <a> <b> <c> ...))
+  * -> (list (<f> <a>) (<f> <b>) (<f> <c>) ...)
   
   
