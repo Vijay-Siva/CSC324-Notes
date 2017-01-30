@@ -143,4 +143,39 @@ form we would like to be able to use, and the expression form we would like it t
     (loop)))
 ```  
 
+## Symbols and Quoting  
 
+Symbols: the datatype for names  
+
+Similar to enums in other langauges. As an ADT: just comparison for equality.    
+
+```
+(check-expect (equal? (quote hello) (quote hello))
+              #true)
+
+(check-expect (equal? (quote heloo) (quote hello))
+              #false)
+
+; Shorthand: single quote in front of the name.
+(check-expect (equal? 'hello (quote hello))
+              #true)
+```
+
+* Quoting leaves numbers, strings and booleans alone
+```
+(check-expect (quote 123) 123)
+(check-expect (quote "hello") "hello")
+(check-expect (quote #true) #true)
+```
+* Quoting turns names into symbols
+```
+(check-expect (symbol? (quote hello)) #true)
+(check-expect (symbol? (quote +)) #true)
+(check-expect (symbol? (quote map)) #true)
+(check-expect (symbol? (quote if)) #true)
+```
+
+* Turns parenthesized expression into lists, quoting recursively 
+```
+(check-expect (quote ((+ 1 2) one)) (list (list '+ 1 2) 'one))
+```
